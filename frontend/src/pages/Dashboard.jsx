@@ -3,6 +3,7 @@ import axios from 'axios';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import { API_URL } from '../api'; // <--- Importa la URL base
 
 const COLORS = ['#f39c12', '#2ecc71'];
 
@@ -15,7 +16,7 @@ function Dashboard({ usuario, setUsuario }) {
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const res = await axios.get('http://localhost:3001/api/reclamos');
+        const res = await axios.get(`${API_URL}/api/reclamos`);
         setReclamos(res.data);
       } catch (error) {
         console.error('Error al cargar datos:', error);

@@ -4,6 +4,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import { FaClock, FaCheckCircle, FaList } from 'react-icons/fa';
+import { API_URL } from '../api'; // <--- Importa la URL base
 
 const COLORS = ['#D22630', '#2ecc71']; // Rojo y verde
 
@@ -16,7 +17,7 @@ function Resumen({ usuario, setUsuario }) {
 
   const cargarDatos = async () => {
     try {
-      const res = await axios.get('http://localhost:3001/api/reclamos');
+      const res = await axios.get(`${API_URL}/api/reclamos`);
       setReclamos(res.data);
     } catch (error) {
       console.error('Error al cargar reclamos:', error);
@@ -29,7 +30,7 @@ function Resumen({ usuario, setUsuario }) {
 
   const marcarResuelto = async (id) => {
     try {
-      await axios.put(`http://localhost:3001/api/reclamos/${id}`);
+      await axios.put(`${API_URL}/api/reclamos/${id}`);
       cargarDatos();
     } catch (error) {
       console.error('❌ Error al actualizar el estado:', error);
@@ -91,55 +92,55 @@ function Resumen({ usuario, setUsuario }) {
 
         {/* TARJETAS + GRAFICO */}
         <div
-  style={{
-    display: 'flex',
-    gap: '2rem',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    marginBottom: '2rem'
-  }}
->
-  {/* Tarjetas apiladas verticalmente */}
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', minWidth: '220px' }}>
-    {miniCard('#fff', '#D22630', <FaClock />, 'Pendientes', pendientes)}
-    {miniCard('#fff', '#2ecc71', <FaCheckCircle />, 'Resueltos', resueltos)}
-    {miniCard('#fff', '#3498db', <FaList />, 'Total', total)}
-  </div>
-
-  {/* Gráfico a la derecha */}
-  <div
-    style={{
-      maxWidth: '800px',
-      minWidth: '320px',
-      backgroundColor: '#fff',
-      padding: '1rem',
-      borderRadius: '10px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-      border: '1px solid #eee',
-      flex: 1
-    }}
-  >
-    <ResponsiveContainer width="100%" height={430}>
-      <PieChart>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          outerRadius={150}
-          labelLine={false}
-          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-          dataKey="value"
+          style={{
+            display: 'flex',
+            gap: '2rem',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            marginBottom: '2rem'
+          }}
         >
-          {data.map((entry, index) => (
-            <Cell key={index} fill={COLORS[index]} />
-          ))}
-        </Pie>
-        <Tooltip />
-        <Legend />
-      </PieChart>
-    </ResponsiveContainer>
-  </div>
-</div>
+          {/* Tarjetas apiladas verticalmente */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', minWidth: '220px' }}>
+            {miniCard('#fff', '#D22630', <FaClock />, 'Pendientes', pendientes)}
+            {miniCard('#fff', '#2ecc71', <FaCheckCircle />, 'Resueltos', resueltos)}
+            {miniCard('#fff', '#3498db', <FaList />, 'Total', total)}
+          </div>
+
+          {/* Gráfico a la derecha */}
+          <div
+            style={{
+              maxWidth: '800px',
+              minWidth: '320px',
+              backgroundColor: '#fff',
+              padding: '1rem',
+              borderRadius: '10px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              border: '1px solid #eee',
+              flex: 1
+            }}
+          >
+            <ResponsiveContainer width="100%" height={430}>
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={150}
+                  labelLine={false}
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  dataKey="value"
+                >
+                  {data.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
         {/* TABLA */}
         <h3 style={{ marginTop: '2rem', color: '#D22630' }}>Historial de Reclamos</h3>

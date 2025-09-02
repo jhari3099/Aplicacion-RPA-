@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../api'; // <--- Importa la URL base
 
 function Login({ setUsuario }) {
   const [correo, setCorreo] = useState('');
@@ -11,7 +12,7 @@ function Login({ setUsuario }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3001/api/usuarios/login', {
+      const res = await axios.post(`${API_URL}/api/usuarios/login`, {
         correo,
         password
       });

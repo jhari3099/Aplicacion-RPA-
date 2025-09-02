@@ -7,15 +7,21 @@ import uipathRoutes from './routes/uipath.js';
 
 dotenv.config();
 
-const app = express(); // <-- Mueve esto arriba
+const app = express();
 
-app.use(cors());
+// Permite CORS desde cualquier origen (puedes restringirlo si quieres)
+app.use(cors({
+  origin: '*', // O pon aquí la URL de tu frontend, ej: 'http://localhost:5173'
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(express.json());
 
 app.use('/api/reclamos', reclamosRoutes);
 console.log('Rutas de reclamos montadas');
 
-app.use('/api/usuarios', usuariosRoutes); // <-- Ahora sí, después de declarar app
+app.use('/api/usuarios', usuariosRoutes);
 
 app.use('/api/uipath', uipathRoutes);
 

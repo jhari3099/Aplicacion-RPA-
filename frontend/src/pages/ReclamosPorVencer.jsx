@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar';
+import { API_URL } from '../api'; // <--- Importa la URL base
 
 function ReclamosPorVencer({ usuario, setUsuario }) {
   const [reclamos, setReclamos] = useState([]);
@@ -10,7 +11,7 @@ function ReclamosPorVencer({ usuario, setUsuario }) {
   useEffect(() => {
     const cargarReclamosPorVencer = async () => {
       try {
-        const res = await axios.get('http://localhost:3001/api/reclamos/por-vencer');
+        const res = await axios.get(`${API_URL}/api/reclamos/por-vencer`);
         setReclamos(Array.isArray(res.data) ? res.data : []);
       } catch (error) {
         console.error('❌ Error al cargar reclamos por vencer:', error);

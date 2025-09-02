@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../api'; // <--- Importa la URL base
 
 function DetalleReclamo() {
   const { id } = useParams();
@@ -8,20 +9,20 @@ function DetalleReclamo() {
   const [reclamo, setReclamo] = useState(null);
   const [error, setError] = useState('');
 
- useEffect(() => {
-  const obtenerReclamo = async () => {
-    try {
-      console.log('Buscando reclamo con ID:', id); // 👈 Agrega esto
-      const res = await axios.get(`http://localhost:3001/api/reclamos/${id}`);
-      console.log('Reclamo obtenido:', res.data);  // 👈 También esto
-      setReclamo(res.data);
-    } catch (err) {
-      console.error('Error al obtener el reclamo:', err);
-      setError('No se pudo cargar el reclamo.');
-    }
-  };
-  obtenerReclamo();
-}, [id]);
+  useEffect(() => {
+    const obtenerReclamo = async () => {
+      try {
+        console.log('Buscando reclamo con ID:', id);
+        const res = await axios.get(`${API_URL}/api/reclamos/${id}`);
+        console.log('Reclamo obtenido:', res.data);
+        setReclamo(res.data);
+      } catch (err) {
+        console.error('Error al obtener el reclamo:', err);
+        setError('No se pudo cargar el reclamo.');
+      }
+    };
+    obtenerReclamo();
+  }, [id]);
 
   if (error) {
     return <div style={{ padding: '2rem', color: 'red' }}>{error}</div>;

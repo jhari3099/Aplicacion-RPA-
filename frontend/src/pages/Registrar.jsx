@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../api'; // <--- Importa la URL base
 import './Registrar.css';
 
 function Registrar({ usuario }) {
@@ -15,12 +16,12 @@ function Registrar({ usuario }) {
       categoria: tipo,
       descripcion,
       estado: 'Pendiente',
-      correo: usuario.correo, // Usa el correo del usuario autenticado
+      correo: usuario.correo,
     };
 
     try {
-      await axios.post('http://localhost:3001/api/reclamos', nuevoReclamo);
-      const response = await axios.post('http://localhost:3001/api/uipath/enviar', nuevoReclamo);
+      await axios.post(`${API_URL}/api/reclamos`, nuevoReclamo);
+      const response = await axios.post(`${API_URL}/api/uipath/enviar`, nuevoReclamo);
       console.log('Respuesta de UiPath:', response.data);
       setMensaje('✅ Reclamo guardado exitosamente');
       setTipo('');

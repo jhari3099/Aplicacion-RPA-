@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../api'; // <--- Importa la URL base
 
 function Historial() {
   const [reclamos, setReclamos] = useState([]);
@@ -8,7 +9,7 @@ function Historial() {
 
   const cargarReclamos = async () => {
     try {
-      const res = await axios.get('http://localhost:3001/api/reclamos');
+      const res = await axios.get(`${API_URL}/api/reclamos`);
       setReclamos(res.data);
     } catch (error) {
       console.error('❌ Error al obtener reclamos:', error);
@@ -21,7 +22,7 @@ function Historial() {
 
   const marcarResuelto = async (id) => {
     try {
-      await axios.put(`http://localhost:3001/api/reclamos/${id}`);
+      await axios.put(`${API_URL}/api/reclamos/${id}`);
       cargarReclamos();
     } catch (error) {
       console.error('❌ Error al actualizar el estado:', error);

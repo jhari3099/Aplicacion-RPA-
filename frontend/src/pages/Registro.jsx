@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../api'; // <--- Importa la URL base
 import './Registro.css';
 
 function Registro() {
@@ -14,7 +15,7 @@ function Registro() {
   const handleRegistro = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3001/api/usuarios/registrar', {
+      await axios.post(`${API_URL}/api/usuarios/registrar`, {
         nombre,
         correo,
         password,

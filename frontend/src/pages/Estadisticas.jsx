@@ -4,6 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
 import Sidebar from '../components/Sidebar';
+import { API_URL } from '../api'; // <--- Importa la URL base
 
 const COLORS = ['#D22630', '#2ecc71', '#3498db', '#9b59b6', '#1abc9c', '#e74c3c'];
 
@@ -14,7 +15,7 @@ function Estadisticas({ usuario, setUsuario }) {
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const res = await axios.get('http://localhost:3001/api/reclamos');
+        const res = await axios.get(`${API_URL}/api/reclamos`);
         const reclamos = res.data;
 
         // PieChart por estado
