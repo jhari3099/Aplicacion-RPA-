@@ -1,0 +1,492 @@
+[
+  {
+    "id": 21,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Necesito desbloquear mi préstamo numero 2",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 22,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "El Prestamo que tengo pendiente no lo puedo visualizar",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 23,
+    "fecha": "2025-06-10",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Tengo una tarjeta bloqueda , me gustaría que me ayuden a solucionar este problema",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 24,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Quiero realizar un prestamo y no puedo acceder",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 25,
+    "fecha": "2025-06-10",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Mi tarjeta se encuentra bloqueada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 26,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Necesito desbloquear mi préstamo numero 2",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 27,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "Errores en la transferencia no se puede \"REALIZAR\"",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 28,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Necesito desbloquear mi préstamo numero 2",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 29,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "tengo problemas con mi trasnferencia",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 30,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Necesito desbloquear mi préstamo numero 3",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 31,
+    "fecha": "2025-06-10",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "ERROR",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 32,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "No puedo retirar mi dinero del cajero con mi tarjeta y se quedo atortada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 33,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero automatico se quedo con mi dinero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 34,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "perdi mi dinero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 35,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "no me sale el dinero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 36,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "no me llegó el dinero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 37,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "no me llegó el dinero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 38,
+    "fecha": "2025-06-10",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Mi tarjeta se quedo bloqueada",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 39,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Necesito un prestamo y no me lo aceptan",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 40,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero se comio mi dinero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 41,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero se trago mis 100 soles",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 42,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero se trago mi tarjeta",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 43,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Mi prestamo me genero extras",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 44,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Necesito desbloquear mi préstamo numero 3",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 45,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "No encuentro cajeros automaticos",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 46,
+    "fecha": "2025-06-10",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Mi tarjeta se bloqueo ",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 47,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero esta dañado",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 48,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "El prestamo me genera mucho interes",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 49,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "No veo el cajero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 50,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "Problemas con mi cajero ",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 51,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "qweqeqweqw",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 52,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "Un prestamo me da muchos intereses ",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 53,
+    "fecha": "2025-06-10",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Mi tarjeta se bloqueo y no puedo realizar transacciones",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 54,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero se comio mi dopneroo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 55,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "aaaaaaaaaaaa",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 56,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "qweqweqdasdasdasd",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 57,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "Errorrrrrrrrrrrrr",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 58,
+    "fecha": "2025-06-10",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "qweqweqweqw",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 59,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "qweqaazzzzzzzzzzzzzzzzzzz",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 60,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "qeqazzzzzzzzzzzzzzzzzzzzz",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 61,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "aazaaaaaaaaaaaaaaaaaa",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 62,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "dxsgfsdfgsdf",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 63,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "qqdqwdqwdqwq",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 64,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "qweqeqweqweqwerqwwwwwwwwwwwwwwwwwww",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 65,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "qweeqweqweq error en mi trabajo ",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 66,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 67,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "adasdddddddddddddddddddddddddddddddddddd",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 68,
+    "fecha": "2025-06-10",
+    "categoria": "Transferencia fallida",
+    "descripcion": "Tengo problemas al realizar mi transferencia",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 69,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero se tragó mis 100 soles",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 70,
+    "fecha": "2025-06-10",
+    "categoria": "Cajero automático",
+    "descripcion": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 71,
+    "fecha": "2025-06-10",
+    "categoria": "Préstamos",
+    "descripcion": "sasssssssssssssssssssssssssssssssssss",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 72,
+    "fecha": "2025-06-10",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 73,
+    "fecha": "2025-06-26",
+    "categoria": "Transferencia fallida",
+    "descripcion": "Tuve errores al realizar una transferencia me salio \"error\"",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 82,
+    "fecha": "2025-07-04",
+    "categoria": "Cajero automático",
+    "descripcion": "Problemas con el cajero de Av La marina",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 83,
+    "fecha": "2025-07-04",
+    "categoria": "Préstamos",
+    "descripcion": "El crédito de mi prestamo es incorrecto",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 84,
+    "fecha": "2025-07-04",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Mi tarjeta se quedó atorada en el cajero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 85,
+    "fecha": "2025-07-04",
+    "categoria": "Transferencia fallida",
+    "descripcion": "Transferencia erronea ",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 86,
+    "fecha": "2025-07-04",
+    "categoria": "Préstamos",
+    "descripcion": "Cantidad de prestamo incorrecta",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 87,
+    "fecha": "2025-07-04",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero esta fuera de servicio en San Miguel",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 88,
+    "fecha": "2025-07-04",
+    "categoria": "Transferencia fallida",
+    "descripcion": "Error al realizar transferencia\n",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 89,
+    "fecha": "2025-07-04",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero no funciona",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 90,
+    "fecha": "2025-07-04",
+    "categoria": "Transferencia fallida",
+    "descripcion": "Transferencia sin código",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 91,
+    "fecha": "2025-07-04",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Extravío de tarjeta",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 92,
+    "fecha": "2025-07-04",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Olvide clave de mi tarjeta",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 93,
+    "fecha": "2025-07-04",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Tuve un robo de mi tarjeta y quiero bloquearla",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 94,
+    "fecha": "2025-07-04",
+    "categoria": "Tarjeta bloqueada",
+    "descripcion": "Perdí mi tarjeta",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 95,
+    "fecha": "2025-07-04",
+    "categoria": "Cajero automático",
+    "descripcion": "El cajero se tragó mi dinero",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 96,
+    "fecha": "2025-07-04",
+    "categoria": "Transferencia fallida",
+    "descripcion": "La transferencia no fue exitosa",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 97,
+    "fecha": "2025-07-04",
+    "categoria": "Préstamos",
+    "descripcion": "NO aprobaron mi prestamo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 98,
+    "fecha": "2025-07-04",
+    "categoria": "Préstamos",
+    "descripcion": "Quiero solicitar un prestamo",
+    "estado": "Pendiente"
+  }
+]

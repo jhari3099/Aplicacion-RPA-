@@ -1,0 +1,88 @@
+/* Registrar.css */
+.registro-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #D22630;
+}
+
+.registro-container {
+  background: #fff;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  width: 100%;
+  max-width: 420px;
+  color: #222; /* <-- Color de texto negro para todo el contenedor */
+}
+
+.registro-container h2 {
+  color: #D22630;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+}
+
+.formulario label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #222;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.formulario select,
+.formulario textarea,
+.formulario input[type="email"] {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  background: #f7f7f7;
+  color: #222; /* <-- Color de texto negro en campos */
+  resize: none;
+}
+
+.formulario textarea {
+  min-height: 80px;
+}
+
+.formulario input[disabled], 
+.formulario input[readonly] {
+  color: #222 !important; /* <-- Color negro para campos deshabilitados */
+  opacity: 1;
+}
+
+/* Placeholders en negro */
+.formulario input::placeholder,
+.formulario textarea::placeholder {
+  color: #888;
+  opacity: 1;
+}
+
+.formulario button[type="submit"] {
+  width: 100%;
+  padding: 0.8rem;
+  background: #D22630;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.formulario button[type="submit"]:hover {
+  background: #a81b25;
+}
+
+.mensaje {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: bold;
+}
