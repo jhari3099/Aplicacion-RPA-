@@ -9,12 +9,9 @@ dotenv.config();
 
 const app = express();
 
-// Permite CORS desde cualquier origen (puedes restringirlo si quieres)
-app.use(cors({
-  origin: '*', // O pon aquí la URL de tu frontend, ej: 'http://localhost:5173'
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+// CORS para todas las rutas y métodos
+app.use(cors());
+app.options('*', cors());
 
 app.use(express.json());
 
