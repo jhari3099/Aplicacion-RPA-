@@ -9,9 +9,8 @@ dotenv.config();
 
 const app = express();
 
-// CORS para todas las rutas y métodos
+// CORS simple para todas las rutas y métodos
 app.use(cors());
-app.options('*', cors());
 
 app.use(express.json());
 
