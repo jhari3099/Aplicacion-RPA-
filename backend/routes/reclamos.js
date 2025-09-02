@@ -40,13 +40,19 @@ router.post('/', async (req, res) => {
 
     await exportarReclamos();
 
-    await axios.post('http://localhost:3001/api/uipath/enviar', {
-      fecha, categoria, descripcion, estado, correo
-    });
+    // Intenta enviar a UiPath, pero no detengas el registro si falla
+    try {
+      await axios.post('http://localhost:3001/api/uipath/enviar', {
+        fecha, categoria, descripcion, estado, correo
+      });
+    } catch (uipathError) {
+      console.error('Error enviando a UiPath:', uipathError.message);
+      // Opcional: puedes guardar el error en logs, pero no respondas 500
+    }
 
-    res.status(201).json({ message: 'Reclamo registrado y enviado a UiPath', id: result.insertId });
+    res.status(201).json({ message: 'Reclamo registrado correctamente', id: result.insertId });
   } catch (error) {
-    console.error('ERROR SQL O UIPATH:', error.response?.data || error.message);
+    console.error('ERROR SQL:', error.message);
     res.status(500).json({ message: 'Error del servidor', error: error.message });
   }
 });
