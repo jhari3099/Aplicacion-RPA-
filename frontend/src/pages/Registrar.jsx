@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { API_URL } from '../api'; // <--- Importa la URL base
+import { API_URL } from '../api';
+import { useNavigate } from 'react-router-dom';
 import './Registrar.css';
 
-function Registrar({ usuario }) {
+function Registrar({ usuario, setUsuario }) {
   const [tipo, setTipo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [mensaje, setMensaje] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('usuario');
+    setUsuario(null); // Actualiza el estado global
+    navigate('/login', { replace: true }); // Redirige al login
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +42,25 @@ function Registrar({ usuario }) {
 
   return (
     <div className="registro-wrapper">
+      {/* Botón cerrar sesión */}
+      <button
+        style={{
+          position: 'absolute',
+          top: '30px',
+          right: '30px',
+          background: '#D22630',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '5px',
+          padding: '0.5rem 1rem',
+          cursor: 'pointer',
+          fontWeight: 'bold',
+          zIndex: 10
+        }}
+        onClick={handleLogout}
+      >
+        Cerrar sesión
+      </button>
       <div className="registro-container">
         <h2>Registrar Reclamo</h2>
         <form onSubmit={handleSubmit} className="formulario">

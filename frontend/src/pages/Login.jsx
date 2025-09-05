@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../api'; // <--- Importa la URL base
+import logoBN from '../assets/logobn-bg-blanco.png';
 
 function Login({ setUsuario }) {
   const [correo, setCorreo] = useState('');
@@ -44,6 +45,10 @@ function Login({ setUsuario }) {
         width: '100%',
         maxWidth: '400px'
       }}>
+        {/* Logo del Banco de la Nación */}
+        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          <img src={logoBN} alt="Banco de la Nación" style={{ width: '120px', height: 'auto' }} />
+        </div>
         <h2 style={{ color: '#D22630', textAlign: 'center' }}>Iniciar Sesión</h2>
         <form onSubmit={handleLogin}>
           <input
