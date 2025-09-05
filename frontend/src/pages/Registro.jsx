@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../api'; // <--- Importa la URL base
 import './Registro.css';
+import logoBN from '../assets/logobn-bg-blanco-removebg.png';
 
 function Registro() {
   const [nombre, setNombre] = useState('');
@@ -38,6 +39,9 @@ function Registro() {
   return (
     <div className="registro-wrapper">
       <div className="registro-card">
+        <div className = "logoBN" style={{  textAlign: 'center' }}>
+        <img src={logoBN} alt="Banco de la Nación" style={{ width: '300px', height: 'auto' }} />
+      </div>
         <h2 style={{ color: '#D22630', textAlign: 'center' }}>Crear cuenta</h2>
         <form onSubmit={handleRegistro}>
           <input type="text" placeholder="Nombre completo" value={nombre}

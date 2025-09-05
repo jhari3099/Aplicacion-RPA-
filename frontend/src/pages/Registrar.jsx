@@ -34,7 +34,7 @@ function Registrar({ usuario, setUsuario }) {
       setMensaje('✅ Reclamo guardado exitosamente');
       setTipo('');
       setDescripcion('');
-    } catch (error) {
+    } catch (error) { 
       console.error('Error al registrar reclamo o enviar a UiPath:', error);
       setMensaje('❌ Error al guardar reclamo');
     }

@@ -47,8 +47,8 @@ function Login({ setUsuario }) {
         textAlign: 'center'
       }}>
         {/* Logo del Banco de la Nación */}
-        <div style={{ marginBottom: '1.5rem' }}>
-          <img src={logoBN} alt="Banco de la Nación" style={{ width: '160px', height: 'auto' }} />
+        <div className = "logoBN" style={{  textAlign: 'center' }}>
+                <img src={logoBN} alt="Banco de la Nación" style={{ width: '300px', height: 'auto' }} />
         </div>
         <h2 style={{ color: '#D22630', fontWeight: 'bold', marginBottom: '1.5rem' }}>Iniciar Sesión</h2>
         <form onSubmit={handleLogin}>

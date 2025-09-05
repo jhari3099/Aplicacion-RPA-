@@ -1,5 +1,5 @@
 .registro-wrapper {
-  background-color: #D22630;
+  background-color: #f8f8f8;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -39,4 +39,8 @@
 .registro-btn:hover {
   background-color: #b71c1c;
   transform: scale(1.05);
+}
+.logoBN {
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
