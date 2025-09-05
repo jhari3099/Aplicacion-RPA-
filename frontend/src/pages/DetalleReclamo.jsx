@@ -35,7 +35,7 @@ function DetalleReclamo() {
   return (
     <div style={{
       padding: '2rem',
-      backgroundColor: '#D22630',
+      backgroundColor: '#ffffffff',
       minHeight: '100vh',
       display: 'flex',
       justifyContent: 'center',

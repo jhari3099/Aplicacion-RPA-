@@ -236,20 +236,27 @@ function Resumen({ usuario, setUsuario }) {
 
 // Tarjeta blanca con borde y acento de color
 const miniCard = (bgColor, borderColor, icon, label, value, onClick, selected) => (
-  <div 
-  onClick={onClick}
-  style={{
-    backgroundColor: bgColor,
-    border: `2px solid ${borderColor}`,
-    padding: '1rem',
-    borderRadius: '10px',
-    color: borderColor,
-    flex: '1',
-    minWidth: '200px',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-  }}>
+  <div
+    onClick={onClick}
+    style={{
+      backgroundColor: bgColor,
+      border: `2px solid ${borderColor}`,
+      padding: '1rem',
+      borderRadius: '10px',
+      color: borderColor,
+      flex: '1',
+      minWidth: '200px',
+      textAlign: 'center',
+      fontWeight: 'bold',
+      boxShadow: selected ? '0 4px 16px rgba(210,38,48,0.15)' : '0 2px 8px rgba(0,0,0,0.08)',
+      cursor: 'pointer',
+      opacity: selected ? 1 : 0.92,
+      transition: 'box-shadow 0.2s, transform 0.2s, opacity 0.2s',
+      transform: selected ? 'scale(1.04)' : 'scale(1)',
+    }}
+    onMouseEnter={e => e.currentTarget.style.boxShadow = '0 8px 24px rgba(210,38,48,0.18)'}
+    onMouseLeave={e => e.currentTarget.style.boxShadow = selected ? '0 4px 16px rgba(210,38,48,0.15)' : '0 2px 8px rgba(0,0,0,0.08)'}
+  >
     <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{icon}</div>
     <div>{label}</div>
     <div style={{ fontSize: '1.4rem' }}>{value}</div>
