@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import { FaClock, FaCheckCircle, FaList } from 'react-icons/fa';
 import { API_URL } from '../api'; // <--- Importa la URL base
+import { FaEye } from 'react-icons/fa';
 
 const COLORS = ['#D22630', '#2ecc71']; // Rojo y verde
 
