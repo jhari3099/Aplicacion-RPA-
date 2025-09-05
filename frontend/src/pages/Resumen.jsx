@@ -102,10 +102,34 @@ function Resumen({ usuario, setUsuario }) {
         >
           {/* Tarjetas apiladas verticalmente */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', minWidth: '220px' }}>
-            {miniCard('#fff', '#D22630', <FaClock />, 'Pendientes', pendientes)}
-            {miniCard('#fff', '#2ecc71', <FaCheckCircle />, 'Resueltos', resueltos)}
-            {miniCard('#fff', '#3498db', <FaList />, 'Total', total)}
-          </div>
+  {miniCard(
+    '#fff',
+    '#D22630',
+    <FaClock />,
+    'Pendientes',
+    pendientes,
+    () => setFiltroEstado('pendiente'),
+    filtroEstado === 'pendiente'
+  )}
+  {miniCard(
+    '#fff',
+    '#2ecc71',
+    <FaCheckCircle />,
+    'Resueltos',
+    resueltos,
+    () => setFiltroEstado('resuelto'),
+    filtroEstado === 'resuelto'
+  )}
+  {miniCard(
+    '#fff',
+    '#3498db',
+    <FaList />,
+    'Total',
+    total,
+    () => setFiltroEstado('todos'),
+    filtroEstado === 'todos'
+  )}
+</div>
 
           {/* Gráfico a la derecha */}
           <div
@@ -211,8 +235,10 @@ function Resumen({ usuario, setUsuario }) {
 }
 
 // Tarjeta blanca con borde y acento de color
-const miniCard = (bgColor, borderColor, icon, label, value) => (
-  <div style={{
+const miniCard = (bgColor, borderColor, icon, label, value, onClick, selected) => (
+  <div 
+  onClick={onClick}
+  style={{
     backgroundColor: bgColor,
     border: `2px solid ${borderColor}`,
     padding: '1rem',
