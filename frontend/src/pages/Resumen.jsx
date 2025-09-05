@@ -3,9 +3,8 @@ import axios from 'axios';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { FaClock, FaCheckCircle, FaList } from 'react-icons/fa';
+import { FaClock, FaCheckCircle, FaList, FaEye } from 'react-icons/fa';
 import { API_URL } from '../api'; // <--- Importa la URL base
-import { FaEye } from 'react-icons/fa';
 
 const COLORS = ['#D22630', '#2ecc71']; // Rojo y verde
 
@@ -103,34 +102,34 @@ function Resumen({ usuario, setUsuario }) {
         >
           {/* Tarjetas apiladas verticalmente */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', minWidth: '220px' }}>
-  {miniCard(
-    '#fff',
-    '#D22630',
-    <FaClock />,
-    'Pendientes',
-    pendientes,
-    () => setFiltroEstado('pendiente'),
-    filtroEstado === 'pendiente'
-  )}
-  {miniCard(
-    '#fff',
-    '#2ecc71',
-    <FaCheckCircle />,
-    'Resueltos',
-    resueltos,
-    () => setFiltroEstado('resuelto'),
-    filtroEstado === 'resuelto'
-  )}
-  {miniCard(
-    '#fff',
-    '#3498db',
-    <FaList />,
-    'Total',
-    total,
-    () => setFiltroEstado('todos'),
-    filtroEstado === 'todos'
-  )}
-</div>
+            {miniCard(
+              '#fff',
+              '#D22630',
+              <FaClock />,
+              'Pendientes',
+              pendientes,
+              () => setFiltroEstado('pendiente'),
+              filtroEstado === 'pendiente'
+            )}
+            {miniCard(
+              '#fff',
+              '#2ecc71',
+              <FaCheckCircle />,
+              'Resueltos',
+              resueltos,
+              () => setFiltroEstado('resuelto'),
+              filtroEstado === 'resuelto'
+            )}
+            {miniCard(
+              '#fff',
+              '#3498db',
+              <FaList />,
+              'Total',
+              total,
+              () => setFiltroEstado('todos'),
+              filtroEstado === 'todos'
+            )}
+          </div>
 
           {/* Gráfico a la derecha */}
           <div
@@ -203,21 +202,29 @@ function Resumen({ usuario, setUsuario }) {
                       {r.estado}
                     </td>
                     <td style={td}>
-                      {r.estado?.trim().toLowerCase() === 'pendiente' && (
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        {r.estado?.trim().toLowerCase() === 'pendiente' && (
+                          <button
+                            onClick={() => marcarResuelto(r.id)}
+                            style={btnAction('#2ecc71')}
+                          >
+                            Resuelto
+                          </button>
+                        )}
                         <button
-                          onClick={() => marcarResuelto(r.id)}
-                          style={btnAction('#2ecc71')}
+                          onClick={() => navigate(`/reclamo/${r.id}`)}
+                          style={{
+                            ...btnAction('#3498db'),
+                            padding: '0.4rem 0.6rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                          title="Ver Detalle"
                         >
-                          Resuelto
+                          <FaEye size={18} />
                         </button>
-                      )}
-                     <button
-  onClick={() => navigate(`/reclamo/${r.id}`)}
-  style={{ ...btnAction('#3498db'), padding: '0.4rem 0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-  title="Ver Detalle"
->
-  <FaEye size={18} />
-</button>
+                      </div>
                     </td>
                   </tr>
                 ))
