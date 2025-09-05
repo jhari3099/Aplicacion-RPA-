@@ -207,15 +207,16 @@ function Resumen({ usuario, setUsuario }) {
                           onClick={() => marcarResuelto(r.id)}
                           style={btnAction('#2ecc71')}
                         >
-                          Resolver
+                          Resuelto
                         </button>
                       )}
-                      <button
-                        onClick={() => navigate(`/reclamo/${r.id}`)}
-                        style={btnAction('#3498db')}
-                      >
-                        Ver Detalle
-                      </button>
+                     <button
+  onClick={() => navigate(`/reclamo/${r.id}`)}
+  style={{ ...btnAction('#3498db'), padding: '0.4rem 0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+  title="Ver Detalle"
+>
+  <FaEye size={18} />
+</button>
                     </td>
                   </tr>
                 ))

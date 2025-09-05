@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar';
@@ -5,7 +6,6 @@ import { API_URL } from '../api'; // <--- Importa la URL base
 
 function ReclamosPorVencer({ usuario, setUsuario }) {
   const [reclamos, setReclamos] = useState([]);
-  const [filtroEstado, setFiltroEstado] = useState('Todos');
   const [busqueda, setBusqueda] = useState('');
 
   useEffect(() => {
@@ -23,15 +23,11 @@ function ReclamosPorVencer({ usuario, setUsuario }) {
   }, []);
 
   const reclamosFiltrados = reclamos.filter((r) => {
-    const coincideEstado =
-      filtroEstado === 'Todos' || r.estado.toLowerCase() === filtroEstado.toLowerCase();
-
-    const coincideBusqueda =
+    return (
       busqueda === '' ||
       r.id.toString().includes(busqueda) ||
-      r.categoria.toLowerCase().includes(busqueda.toLowerCase());
-
-    return coincideEstado && coincideBusqueda;
+      r.categoria.toLowerCase().includes(busqueda.toLowerCase())
+    );
   });
 
   return (
@@ -40,7 +36,7 @@ function ReclamosPorVencer({ usuario, setUsuario }) {
       <div style={{ flex: 1, padding: '2rem' }}>
         <h2 style={{ color: '#D22630' }}>Reclamos Pendientes por Vencer (10+ días)</h2>
 
-        {/* Controles de búsqueda y filtro */}
+        {/* Solo input de búsqueda */}
         <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <input
             type="text"
@@ -49,15 +45,6 @@ function ReclamosPorVencer({ usuario, setUsuario }) {
             onChange={(e) => setBusqueda(e.target.value)}
             style={{ padding: '0.5rem', borderRadius: '5px', border: '1px solid #ccc' }}
           />
-          <select
-            value={filtroEstado}
-            onChange={(e) => setFiltroEstado(e.target.value)}
-            style={{ padding: '0.5rem', borderRadius: '5px', border: '1px solid #ccc' }}
-          >
-            <option value="Todos">Todos</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="Resuelto">Resuelto</option>
-          </select>
         </div>
 
         {reclamosFiltrados.length === 0 ? (
