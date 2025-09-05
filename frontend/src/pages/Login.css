@@ -1,0 +1,51 @@
+.login-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 2rem 2.5rem;
+  max-width: 350px;
+  margin: 60px auto;
+  text-align: center;
+}
+
+.login-logo {
+  width: 120px;
+  margin-bottom: 1.5rem;
+}
+
+.login-title {
+  color: #b71c1c; /* Rojo institucional */
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.login-input {
+  width: 100%;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-button {
+  width: 100%;
+  background: #b71c1c;
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: background 0.2s;
+}
+
+.login-button:hover {
+  background: #a31515;
+}
+
+.login-register {
+  color: #b71c1c;
+  text-decoration: none;
+  font-size: 0.95rem;
+}

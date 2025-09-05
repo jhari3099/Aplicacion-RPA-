@@ -31,29 +31,30 @@ function Login({ setUsuario }) {
 
   return (
     <div style={{
-      backgroundColor: '#D22630',
+      backgroundColor: '#fff',
       minHeight: '100vh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center'
     }}>
       <div style={{
-        backgroundColor: 'white',
-        padding: '2rem',
+        backgroundColor: '#fff',
+        padding: '2.5rem 2rem',
         borderRadius: '10px',
-        boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+        boxShadow: '0 0 10px rgba(0,0,0,0.08)',
         width: '100%',
-        maxWidth: '400px'
+        maxWidth: '400px',
+        textAlign: 'center'
       }}>
         {/* Logo del Banco de la Nación */}
-        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <img src={logoBN} alt="Banco de la Nación" style={{ width: '120px', height: 'auto' }} />
+        <div style={{ marginBottom: '1.5rem' }}>
+          <img src={logoBN} alt="Banco de la Nación" style={{ width: '160px', height: 'auto' }} />
         </div>
-        <h2 style={{ color: '#D22630', textAlign: 'center' }}>Iniciar Sesión</h2>
+        <h2 style={{ color: '#D22630', fontWeight: 'bold', marginBottom: '1.5rem' }}>Iniciar Sesión</h2>
         <form onSubmit={handleLogin}>
           <input
             type="email"
-            placeholder="Correo"
+            placeholder="Correo electrónico"
             value={correo}
             onChange={(e) => setCorreo(e.target.value)}
             required
@@ -68,15 +69,15 @@ function Login({ setUsuario }) {
             style={inputStyle}
           />
           <button type="submit" style={buttonStyle}>Entrar</button>
-          {mensaje && <p style={{ color: 'red', marginTop: '1rem' }}>{mensaje}</p>}
+          {mensaje && <p style={{ color: '#D22630', marginTop: '1rem', fontWeight: 'bold' }}>{mensaje}</p>}
         </form>
-        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+        <div style={{ marginTop: '1.5rem' }}>
           <button
             type="button"
             style={linkButtonStyle}
             onClick={() => navigate('/registro')}
           >
-            ¿No tienes cuenta? Regístrate
+            ¿No tienes cuenta? <span style={{ color: '#D22630', fontWeight: 'bold' }}>Regístrate</span>
           </button>
         </div>
       </div>
@@ -87,31 +88,34 @@ function Login({ setUsuario }) {
 const inputStyle = {
   width: '100%',
   marginBottom: '1rem',
-  padding: '0.5rem',
+  padding: '0.7rem',
   fontSize: '1rem',
-  borderRadius: '5px',
-  border: '1px solid #ccc'
+  borderRadius: '4px',
+  border: '1px solid #ccc',
+  outline: 'none'
 };
 
 const buttonStyle = {
   width: '100%',
-  padding: '0.7rem',
+  padding: '0.8rem',
   backgroundColor: '#D22630',
   color: '#fff',
   border: 'none',
-  borderRadius: '5px',
+  borderRadius: '4px',
   fontWeight: 'bold',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  fontSize: '1rem',
+  marginTop: '0.5rem'
 };
 
 const linkButtonStyle = {
   background: 'none',
   border: 'none',
-  color: '#D22630',
-  fontWeight: 'bold',
+  color: '#333',
+  fontWeight: 'normal',
   cursor: 'pointer',
   textDecoration: 'underline',
-  fontSize: '0.95rem'
+  fontSize: '1rem'
 };
 
 export default Login;
