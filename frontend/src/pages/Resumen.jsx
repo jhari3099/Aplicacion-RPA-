@@ -13,6 +13,11 @@ function Resumen({ usuario, setUsuario }) {
   const [filtroEstado, setFiltroEstado] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
   const [ordenAscendente, setOrdenAscendente] = useState(false);
+
+  // Estados para confirmación por fila
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [resolviendo, setResolviendo] = useState(false);
+
   const navigate = useNavigate();
 
   const cargarDatos = async () => {
@@ -31,9 +36,41 @@ function Resumen({ usuario, setUsuario }) {
   const marcarResuelto = async (id) => {
     try {
       await axios.put(`${API_URL}/api/reclamos/${id}`);
-      cargarDatos();
+      await cargarDatos();
     } catch (error) {
       console.error('❌ Error al actualizar el estado:', error);
+    }
+  };
+
+  // Abrir / cerrar modal
+  const openConfirmFor = (reclamo, e) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    setConfirmTarget(reclamo);
+  };
+
+  const closeConfirmFor = (e) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    setConfirmTarget(null);
+  };
+
+  const confirmResolveSingle = async (e) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    if (!confirmTarget) return;
+    setResolviendo(true);
+    try {
+      await marcarResuelto(confirmTarget.id);
+    } finally {
+      setResolviendo(false);
+      setConfirmTarget(null);
     }
   };
 
@@ -205,13 +242,15 @@ function Resumen({ usuario, setUsuario }) {
                       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         {r.estado?.trim().toLowerCase() === 'pendiente' && (
                           <button
-                            onClick={() => marcarResuelto(r.id)}
+                            type="button"
+                            onClick={(e) => openConfirmFor(r, e)}
                             style={btnAction('#2ecc71')}
                           >
                             Resuelto
                           </button>
                         )}
                         <button
+                          type="button"
                           onClick={() => navigate(`/reclamo/${r.id}`)}
                           style={{
                             ...btnAction('#3498db'),
@@ -239,6 +278,36 @@ function Resumen({ usuario, setUsuario }) {
           </table>
         </div>
       </div>
+
+      {/* Modal de confirmación por fila */}
+      {confirmTarget && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{ background: '#fff', padding: '1.2rem', borderRadius: 8, width: '90%', maxWidth: 420 }}>
+            <h3>Confirmar</h3>
+            <p>¿Desea marcar como resuelto el reclamo #{confirmTarget.id} - "{confirmTarget.categoria}"?</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+              <button type="button" onClick={closeConfirmFor} style={{ padding: '0.5rem 1rem', borderRadius: 6 }}>Cancelar</button>
+              <button
+                type="button"
+                onClick={confirmResolveSingle}
+                disabled={resolviendo}
+                style={{ padding: '0.5rem 1rem', borderRadius: 6, background: '#2ecc71', color: '#fff', border: 'none' }}
+              >
+                {resolviendo ? 'Procesando...' : 'Confirmar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

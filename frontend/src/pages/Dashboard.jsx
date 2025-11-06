@@ -3,7 +3,7 @@ import axios from 'axios';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { API_URL } from '../api'; // <--- Importa la URL base
+import { API_URL } from '../api';
 
 const COLORS = ['#f39c12', '#2ecc71'];
 
@@ -11,8 +11,13 @@ function Dashboard({ usuario, setUsuario }) {
   const [reclamos, setReclamos] = useState([]);
   const [filtroEstado, setFiltroEstado] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [loadingResolve, setLoadingResolve] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false); // bulk confirm
+  const [loadingResolve, setLoadingResolve] = useState(false); // bulk loading
+
+  // single-row confirm
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [resolviendo, setResolviendo] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,6 +50,7 @@ function Dashboard({ usuario, setUsuario }) {
     { name: 'Resueltos', value: resueltos }
   ];
 
+  // Bulk confirm handlers (card)
   const openConfirm = () => setShowConfirm(true);
   const closeConfirm = () => setShowConfirm(false);
 
@@ -55,20 +61,38 @@ function Dashboard({ usuario, setUsuario }) {
     }
     setLoadingResolve(true);
     try {
-      // Si tu API soporta bulk update, úsalo. Aquí se actualiza uno por uno.
+      // Si tu API tiene bulk update, usarlo. Aquí actualizamos uno por uno.
       await Promise.all(
         reclamosFiltrados.map(r =>
           axios.patch(`${API_URL}/api/reclamos/${r.id}`, { estado: 'Resuelto' })
         )
       );
-      // Recargar lista
       const res = await axios.get(`${API_URL}/api/reclamos`);
       setReclamos(res.data);
     } catch (error) {
-      console.error('Error marcando como resuelto:', error);
+      console.error('Error marcando como resuelto (bulk):', error);
     } finally {
       setLoadingResolve(false);
       setShowConfirm(false);
+    }
+  };
+
+  // Single-row confirm handlers
+  const openConfirmFor = (reclamo) => setConfirmTarget(reclamo);
+  const closeConfirmFor = () => setConfirmTarget(null);
+
+  const confirmResolveSingle = async () => {
+    if (!confirmTarget) return;
+    setResolviendo(true);
+    try {
+      await axios.patch(`${API_URL}/api/reclamos/${confirmTarget.id}`, { estado: 'Resuelto' });
+      // actualizar estado local
+      setReclamos(prev => prev.map(r => r.id === confirmTarget.id ? { ...r, estado: 'Resuelto' } : r));
+    } catch (error) {
+      console.error('Error marcando como resuelto (single):', error);
+    } finally {
+      setResolviendo(false);
+      closeConfirmFor();
     }
   };
 
@@ -109,15 +133,24 @@ function Dashboard({ usuario, setUsuario }) {
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
           <div style={cardStyle('#f1c40f')}><h4>Pendientes</h4><p>{pendientes}</p></div>
 
-          <div
-            style={{ ...cardStyle('#2ecc71'), cursor: 'pointer' }}
+          <button
             onClick={openConfirm}
             title="Marcar los reclamos filtrados como resueltos"
+            type="button"
+            style={{
+              ...cardStyle('#2ecc71'),
+              cursor: 'pointer',
+              border: 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              backgroundColor: '#2ecc71'
+            }}
           >
             <h4>Resueltos</h4>
             <p>{resueltos}</p>
             <small>Presiona para confirmar</small>
-          </div>
+          </button>
 
           <div style={cardStyle('#3498db')}><h4>Total</h4><p>{total}</p></div>
         </div>
@@ -152,11 +185,16 @@ function Dashboard({ usuario, setUsuario }) {
         </div>
       </div>
 
-      {/* Modal de confirmación */}
+      {/* Bulk Modal de confirmación */}
       {showConfirm && (
         <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
         }}>
           <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '8px', width: '90%', maxWidth: '420px' }}>
             <h3>Confirmar</h3>
@@ -174,6 +212,35 @@ function Dashboard({ usuario, setUsuario }) {
           </div>
         </div>
       )}
+
+      {/* Single-row Modal de confirmación */}
+      {confirmTarget && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000
+        }}>
+          <div style={{ background: '#fff', padding: '1.2rem', borderRadius: 8, width: '90%', maxWidth: 420 }}>
+            <h3>Confirmar</h3>
+            <p>¿Desea marcar como resuelto el reclamo #{confirmTarget.id} - "{confirmTarget.categoria}"?</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+              <button onClick={closeConfirmFor} style={{ padding: '0.5rem 1rem', borderRadius: 6 }}>Cancelar</button>
+              <button
+                onClick={confirmResolveSingle}
+                disabled={resolviendo}
+                style={{ padding: '0.5rem 1rem', borderRadius: 6, background: '#2ecc71', color: '#fff', border: 'none' }}
+              >
+                {resolviendo ? 'Procesando...' : 'Confirmar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

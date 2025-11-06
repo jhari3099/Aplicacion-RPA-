@@ -7,6 +7,10 @@ function Historial() {
   const [filtroEstado, setFiltroEstado] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
 
+  // Estados para confirmación por fila
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [resolviendo, setResolviendo] = useState(false);
+
   const cargarReclamos = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/reclamos`);
@@ -20,25 +24,46 @@ function Historial() {
     cargarReclamos();
   }, []);
 
-  const marcarResuelto = async (id) => {
+  // Abre modal de confirmación para un reclamo
+  const openConfirmFor = (reclamo, e) => {
+    if (e) e.stopPropagation();
+    console.log('openConfirmFor ->', reclamo?.id);
+    setConfirmTarget(reclamo);
+  };
+
+  const closeConfirm = (e) => {
+    if (e) e.stopPropagation();
+    setConfirmTarget(null);
+  };
+
+  // Llama a la API para marcar como resuelto (single)
+  const confirmResolveSingle = async (e) => {
+    if (e) e.stopPropagation();
+    if (!confirmTarget) return;
+    console.log('confirmResolveSingle ->', confirmTarget.id);
+    setResolviendo(true);
     try {
-      await axios.put(`${API_URL}/api/reclamos/${id}`);
-      cargarReclamos();
+      await axios.patch(`${API_URL}/api/reclamos/${confirmTarget.id}`, { estado: 'Resuelto' });
+      // Actualiza estado local sin recargar todo
+      setReclamos(prev => prev.map(r => r.id === confirmTarget.id ? { ...r, estado: 'Resuelto' } : r));
     } catch (error) {
       console.error('❌ Error al actualizar el estado:', error);
+    } finally {
+      setResolviendo(false);
+      setConfirmTarget(null);
     }
   };
 
   const reclamosFiltrados = reclamos.filter(r => {
-    const coincideEstado = 
+    const coincideEstado =
       filtroEstado === 'todos' ||
       r.estado?.trim().toLowerCase() === filtroEstado;
 
     const coincideBusqueda =
-      r.id.toString().includes(busqueda) ||
-      r.categoria?.toLowerCase().includes(busqueda.toLowerCase());
+      r.id?.toString().includes(busqueda) ||
+      r.categoria?.toLowerCase().includes(busqueda.toLowerCase() || '');
 
-    return coincideEstado && coincideBusqueda;
+    return coincideEstado && (busqueda === '' ? true : coincideBusqueda);
   });
 
   return (
@@ -104,7 +129,7 @@ function Historial() {
                 reclamosFiltrados.map((r) => (
                   <tr key={r.id}>
                     <td style={tdStyle}>{r.id}</td>
-                    <td style={tdStyle}>{new Date(r.fecha).toLocaleDateString('es-PE')}</td>
+                    <td style={tdStyle}>{r.fecha ? new Date(r.fecha).toLocaleDateString('es-PE') : '-'}</td>
                     <td style={tdStyle}>{r.categoria}</td>
                     <td style={tdStyle}>{r.descripcion}</td>
                     <td style={{
@@ -117,7 +142,8 @@ function Historial() {
                     <td style={tdStyle}>
                       {r.estado?.trim().toLowerCase() === 'pendiente' && (
                         <button
-                          onClick={() => marcarResuelto(r.id)}
+                          type="button"
+                          onClick={(e) => openConfirmFor(r, e)}
                           style={{
                             backgroundColor: '#2ecc71',
                             color: '#fff',
@@ -145,6 +171,36 @@ function Historial() {
           </table>
         </div>
       </div>
+
+      {/* Modal de confirmación por fila */}
+      {confirmTarget && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{ background: '#fff', padding: '1.2rem', borderRadius: 8, width: '90%', maxWidth: 420 }}>
+            <h3>Confirmar</h3>
+            <p>¿Desea marcar como resuelto el reclamo #{confirmTarget.id} - "{confirmTarget.categoria}"?</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+              <button type="button" onClick={closeConfirm} style={{ padding: '0.5rem 1rem', borderRadius: 6 }}>Cancelar</button>
+              <button
+                type="button"
+                onClick={confirmResolveSingle}
+                disabled={resolviendo}
+                style={{ padding: '0.5rem 1rem', borderRadius: 6, background: '#2ecc71', color: '#fff', border: 'none' }}
+              >
+                {resolviendo ? 'Procesando...' : 'Confirmar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
