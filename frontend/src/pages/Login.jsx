@@ -10,6 +10,21 @@ function Login({ setUsuario }) {
   const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
 
+  // Intenta detectar si el correo existe (ajusta endpoint si tu API usa otra ruta)
+  const checkEmailExists = async () => {
+    try {
+      // Opción A: endpoint que devuelve usuario o lista por query param
+      const res = await axios.get(`${API_URL}/api/usuarios?correo=${encodeURIComponent(correo)}`);
+      if (Array.isArray(res.data)) return res.data.length > 0;
+      return !!res.data && Object.keys(res.data).length > 0;
+    } catch (err) {
+      // Si API responde 404 -> no existe
+      if (err.response && err.response.status === 404) return false;
+      // Si no se puede determinar (error de red u otro), devuelve null
+      return null;
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setMensaje('');
@@ -25,31 +40,54 @@ function Login({ setUsuario }) {
       // No haces navigate aquí, el App decide la ruta correcta
 
     } catch (error) {
-      // Mensaje por defecto
       let msg = 'Correo o contraseña inválidos';
 
-      // Si el backend responde con status o message, intentar detallar
       if (error.response) {
         const { status, data } = error.response;
 
-        // Si el backend devuelve mensaje claro, usarlo (pero limpiarlo)
+        // Si backend ya devuelve message claro, úsalo
         if (data?.message && typeof data.message === 'string') {
           const text = data.message.toLowerCase();
           if (/correo|email|no existe|no registrado/.test(text)) {
             msg = 'Correo no registrado';
-          } else if (/contraseñ|password|clave|credencial/.test(text)) {
-            msg = 'Contraseña incorrecta';
-          } else {
-            // si el backend manda un mensaje legible, mostrarlo
-            msg = data.message;
+            setMensaje(msg);
+            return;
           }
-        } else if (status === 404) {
-          msg = 'Correo no registrado';
-        } else if (status === 401) {
-          msg = 'Contraseña incorrecta';
-        } else {
-          msg = 'Error del servidor. Intente más tarde.';
+          if (/contraseñ|password|clave|credencial/.test(text)) {
+            msg = 'Contraseña incorrecta';
+            setMensaje(msg);
+            return;
+          }
         }
+
+        // Si backend devuelve 404 -> correo no registrado
+        if (status === 404) {
+          msg = 'Correo no registrado';
+          setMensaje(msg);
+          return;
+        }
+
+        // Si backend devuelve 401 -> intentar diferenciar consultando existencia del email
+        if (status === 401) {
+          try {
+            const exists = await checkEmailExists();
+            if (exists === true) {
+              msg = 'Contraseña incorrecta';
+            } else if (exists === false) {
+              msg = 'Correo no registrado';
+            } else {
+              // null -> no se pudo determinar
+              msg = 'Correo o contraseña inválidos';
+            }
+          } catch (e) {
+            msg = 'Correo o contraseña inválidos';
+          }
+          setMensaje(msg);
+          return;
+        }
+
+        // Otros status
+        msg = 'Error del servidor. Intente más tarde.';
       } else {
         // No hay respuesta (problema de red)
         msg = 'Error de red. Verifica tu conexión e inténtalo nuevamente.';
