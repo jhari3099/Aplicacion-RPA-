@@ -38,16 +38,20 @@ router.post('/', async (req, res) => {
       [fecha, categoria, descripcion, estado]
     );
 
-    await exportarReclamos();
+    // Actualizar export si corresponde
+    try {
+      await exportarReclamos();
+    } catch (expErr) {
+      console.error('Error exportando reclamos después de insertar:', expErr);
+    }
 
-    // Intenta enviar a UiPath, pero no detengas el registro si falla
+    // Intento enviar a UiPath (no detiene el flujo si falla)
     try {
       await axios.post('http://localhost:3001/api/uipath/enviar', {
         fecha, categoria, descripcion, estado, correo
       });
     } catch (uipathError) {
       console.error('Error enviando a UiPath:', uipathError.message);
-      // Opcional: puedes guardar el error en logs, pero no respondas 500
     }
 
     res.status(201).json({ message: 'Reclamo registrado correctamente', id: result.insertId });
@@ -57,15 +61,49 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT /api/reclamos/:id
+// PUT /api/reclamos/:id  -> marcar como Resuelto
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    await db.execute('UPDATE reclamos SET estado = "Resuelto" WHERE id = ?', [id]);
-    await exportarReclamos();
+    const [result] = await db.execute('UPDATE reclamos SET estado = "Resuelto" WHERE id = ?', [id]);
+    // result.affectedRows puede variar según driver
+    const affectedRows = result?.affectedRows ?? (result?.affectedRows === 0 ? 0 : undefined);
+    // No ser estrictos: si el update no afectó filas, revisamos si existe el reclamo
+    if (result && result.affectedRows === 0) {
+      // opcional: responder 404 si no existe
+      return res.status(404).json({ message: 'Reclamo no encontrado' });
+    }
+    try {
+      await exportarReclamos();
+    } catch (expErr) {
+      console.error('Error exportando reclamos después de actualizar:', expErr);
+    }
     res.json({ message: 'Estado actualizado a Resuelto' });
   } catch (error) {
     console.error('Error al actualizar estado:', error);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+});
+
+// DELETE /api/reclamos/:id
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result] = await db.execute('DELETE FROM reclamos WHERE id = ?', [id]);
+    const affected = result?.affectedRows ?? (result?.affectedRows === 0 ? 0 : undefined);
+    if (!result || result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Reclamo no encontrado' });
+    }
+
+    try {
+      await exportarReclamos();
+    } catch (expErr) {
+      console.error('Error exportando reclamos después de eliminar:', expErr);
+    }
+
+    res.json({ message: 'Reclamo eliminado correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar reclamo:', error);
     res.status(500).json({ message: 'Error del servidor' });
   }
 });

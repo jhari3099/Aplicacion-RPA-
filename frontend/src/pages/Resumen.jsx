@@ -3,7 +3,7 @@ import axios from 'axios';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { FaClock, FaCheckCircle, FaList, FaEye } from 'react-icons/fa';
+import { FaClock, FaCheckCircle, FaList, FaEye, FaTrash } from 'react-icons/fa';
 import { API_URL } from '../api'; // <--- Importa la URL base
 
 const COLORS = ['#D22630', '#2ecc71']; // Rojo y verde
@@ -14,9 +14,14 @@ function Resumen({ usuario, setUsuario }) {
   const [busqueda, setBusqueda] = useState('');
   const [ordenAscendente, setOrdenAscendente] = useState(false);
 
-  // Estados para confirmación por fila
+  // Estados para confirmación por fila (resolver)
   const [confirmTarget, setConfirmTarget] = useState(null);
   const [resolviendo, setResolviendo] = useState(false);
+
+  // --- Parte de delete comentada --- //
+  // const [deleteTarget, setDeleteTarget] = useState(null);
+  // const [deleting, setDeleting] = useState(false);
+  // ---------------------------------- //
 
   const navigate = useNavigate();
 
@@ -35,6 +40,7 @@ function Resumen({ usuario, setUsuario }) {
 
   const marcarResuelto = async (id) => {
     try {
+      // Ajusta el método/endpoint según tu API (PUT/PATCH)
       await axios.put(`${API_URL}/api/reclamos/${id}`);
       await cargarDatos();
     } catch (error) {
@@ -42,28 +48,19 @@ function Resumen({ usuario, setUsuario }) {
     }
   };
 
-  // Abrir / cerrar modal
+  // ----- Resolver (modal) -----
   const openConfirmFor = (reclamo, e) => {
-    if (e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
+    if (e) { e.stopPropagation(); e.preventDefault(); }
     setConfirmTarget(reclamo);
   };
 
   const closeConfirmFor = (e) => {
-    if (e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
+    if (e) { e.stopPropagation(); e.preventDefault(); }
     setConfirmTarget(null);
   };
 
   const confirmResolveSingle = async (e) => {
-    if (e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
+    if (e) { e.stopPropagation(); e.preventDefault(); }
     if (!confirmTarget) return;
     setResolviendo(true);
     try {
@@ -73,6 +70,37 @@ function Resumen({ usuario, setUsuario }) {
       setConfirmTarget(null);
     }
   };
+
+  // ----- Eliminar (comentado) -----
+  // const openDeleteFor = (reclamo, e) => {
+  //   if (e) { e.stopPropagation(); e.preventDefault(); }
+  //   setDeleteTarget(reclamo);
+  // };
+  //
+  // const closeDeleteFor = (e) => {
+  //   if (e) { e.stopPropagation(); e.preventDefault(); }
+  //   setDeleteTarget(null);
+  // };
+  //
+  // const confirmDeleteSingle = async (e) => {
+  //   if (e) { e.stopPropagation(); e.preventDefault(); }
+  //   if (!deleteTarget) return;
+  //   setDeleting(true);
+  //   try {
+  //     console.log('[DELETE] intentando:', `${API_URL}/api/reclamos/${deleteTarget.id}`);
+  //     const res = await axios.delete(`${API_URL}/api/reclamos/${deleteTarget.id}`);
+  //     console.log('[DELETE] respuesta:', res.status, res.data);
+  //     await cargarDatos();
+  //   } catch (error) {
+  //     const status = error.response?.status ?? 'no-response';
+  //     console.error('❌ Error al eliminar reclamo:', status, error);
+  //     alert('No se pudo eliminar el reclamo. Revisa la consola para más detalles.');
+  //   } finally {
+  //     setDeleting(false);
+  //     setDeleteTarget(null);
+  //   }
+  // };
+  // ---------------------------------
 
   const reclamosFiltrados = reclamos
     .filter(r => {
@@ -263,6 +291,29 @@ function Resumen({ usuario, setUsuario }) {
                         >
                           <FaEye size={18} />
                         </button>
+
+                        {/* Botón de eliminar comentado para desarrollo
+                        <button
+                          type="button"
+                          onClick={(e) => openDeleteFor(r, e)}
+                          style={{
+                            backgroundColor: '#e74c3c',
+                            color: '#fff',
+                            border: 'none',
+                            padding: '0.45rem 0.6rem',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                          title="Eliminar reclamo"
+                          aria-label={`Eliminar reclamo ${r.id}`}
+                        >
+                          <FaTrash size={16} />
+                        </button>
+                        */}
+
                       </div>
                     </td>
                   </tr>
@@ -270,7 +321,7 @@ function Resumen({ usuario, setUsuario }) {
               ) : (
                 <tr>
                   <td colSpan="6" style={{ textAlign: 'center', padding: '1rem' }}>
-                    No se encontraron reclamos con esos criterios.
+                    No se encontraron coincidencias.
                   </td>
                 </tr>
               )}
@@ -279,16 +330,11 @@ function Resumen({ usuario, setUsuario }) {
         </div>
       </div>
 
-      {/* Modal de confirmación por fila */}
+      {/* Modal de confirmación para Resolver */}
       {confirmTarget && (
         <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0,0,0,0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
         }}>
           <div style={{ background: '#fff', padding: '1.2rem', borderRadius: 8, width: '90%', maxWidth: 420 }}>
             <h3>Confirmar</h3>
@@ -307,6 +353,31 @@ function Resumen({ usuario, setUsuario }) {
           </div>
         </div>
       )}
+
+      {/* Modal de confirmación para Eliminar comentado
+      {deleteTarget && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000
+        }}>
+          <div style={{ background: '#fff', padding: '1.2rem', borderRadius: 8, width: '90%', maxWidth: 420 }}>
+            <h3>Eliminar reclamo</h3>
+            <p>¿Está seguro que desea eliminar el reclamo #{deleteTarget.id}? Esta acción no se puede deshacer.</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+              <button type="button" onClick={closeDeleteFor} style={{ padding: '0.5rem 1rem', borderRadius: 6 }}>Cancelar</button>
+              <button
+                type="button"
+                onClick={confirmDeleteSingle}
+                disabled={deleting}
+                style={{ padding: '0.5rem 1rem', borderRadius: 6, background: '#e74c3c', color: '#fff', border: 'none' }}
+              >
+                {deleting ? 'Eliminando...' : 'Eliminar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      */}
 
     </div>
   );

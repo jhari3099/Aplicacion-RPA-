@@ -12,6 +12,7 @@ function Login({ setUsuario }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setMensaje('');
     try {
       const res = await axios.post(`${API_URL}/api/usuarios/login`, {
         correo,
@@ -24,8 +25,38 @@ function Login({ setUsuario }) {
       // No haces navigate aquí, el App decide la ruta correcta
 
     } catch (error) {
+      // Mensaje por defecto
+      let msg = 'Correo o contraseña inválidos';
+
+      // Si el backend responde con status o message, intentar detallar
+      if (error.response) {
+        const { status, data } = error.response;
+
+        // Si el backend devuelve mensaje claro, usarlo (pero limpiarlo)
+        if (data?.message && typeof data.message === 'string') {
+          const text = data.message.toLowerCase();
+          if (/correo|email|no existe|no registrado/.test(text)) {
+            msg = 'Correo no registrado';
+          } else if (/contraseñ|password|clave|credencial/.test(text)) {
+            msg = 'Contraseña incorrecta';
+          } else {
+            // si el backend manda un mensaje legible, mostrarlo
+            msg = data.message;
+          }
+        } else if (status === 404) {
+          msg = 'Correo no registrado';
+        } else if (status === 401) {
+          msg = 'Contraseña incorrecta';
+        } else {
+          msg = 'Error del servidor. Intente más tarde.';
+        }
+      } else {
+        // No hay respuesta (problema de red)
+        msg = 'Error de red. Verifica tu conexión e inténtalo nuevamente.';
+      }
+
       console.error('❌ Error al iniciar sesión:', error);
-      setMensaje('❌ Correo o contraseña inválidos');
+      setMensaje(msg);
     }
   };
 
