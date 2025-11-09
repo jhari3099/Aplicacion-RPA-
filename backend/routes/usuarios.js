@@ -36,7 +36,7 @@ router.get('/email/:correo', async (req, res) => {
   const { correo } = req.params;
   try {
     const [rows] = await db.execute('SELECT id FROM usuarios WHERE correo = ?', [correo]);
-    if (rows.length === 0) return res.status(404).json({ message: 'Correo no registrado' });
+    if (rows.length === 0) return res.status(404).json({ message: 'Correo no registrado o incorrecto' });
     return res.json({ exists: true, id: rows[0].id });
   } catch (error) {
     console.error('Error al verificar correo:', error);
