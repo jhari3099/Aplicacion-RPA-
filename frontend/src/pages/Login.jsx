@@ -1,3 +1,4 @@
+// ...existing code...
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -10,19 +11,35 @@ function Login({ setUsuario }) {
   const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
 
-  // Intenta detectar si el correo existe (ajusta endpoint si tu API usa otra ruta)
+  const isValidEmail = (e) => /\S+@\S+\.\S+/.test(e);
+
+  // checkEmailExists mejorado: intenta 2 endpoints y logea respuestas para depuración
   const checkEmailExists = async () => {
+    if (!isValidEmail(correo)) return null; // no intentar si email no es válido
     try {
-      // Opción A: endpoint que devuelve usuario o lista por query param
+      console.log('[AUTH] checkEmailExists: probando /api/usuarios?correo=...');
       const res = await axios.get(`${API_URL}/api/usuarios?correo=${encodeURIComponent(correo)}`);
+      console.log('[AUTH] checkEmailExists response (query):', res.status, res.data);
       if (Array.isArray(res.data)) return res.data.length > 0;
-      return !!res.data && Object.keys(res.data).length > 0;
+      if (res.data && Object.keys(res.data).length > 0) return true;
     } catch (err) {
-      // Si API responde 404 -> no existe
-      if (err.response && err.response.status === 404) return false;
-      // Si no se puede determinar (error de red u otro), devuelve null
-      return null;
+      console.warn('[AUTH] checkEmailExists (query) error:', err.response?.status, err.response?.data);
+      // intentar endpoint alternativo si existe
+      try {
+        console.log('[AUTH] checkEmailExists: probando /api/usuarios/email/:correo ...');
+        const res2 = await axios.get(`${API_URL}/api/usuarios/email/${encodeURIComponent(correo)}`);
+        console.log('[AUTH] checkEmailExists response (email):', res2.status, res2.data);
+        if (Array.isArray(res2.data)) return res2.data.length > 0;
+        if (res2.data && Object.keys(res2.data).length > 0) return true;
+      } catch (err2) {
+        console.warn('[AUTH] checkEmailExists (email) error:', err2.response?.status, err2.response?.data);
+        // Si el servidor responde 404 en cualquiera, interpretamos como "no existe"
+        if (err.response?.status === 404 || err2.response?.status === 404) return false;
+        // Si no se puede determinar (error de red o 401), devolver null
+        return null;
+      }
     }
+    return false;
   };
 
   const handleLogin = async (e) => {
@@ -33,68 +50,56 @@ function Login({ setUsuario }) {
         correo,
         password
       });
-
       const usuario = res.data;
       localStorage.setItem('usuario', JSON.stringify(usuario));
       setUsuario(usuario);
-      // No haces navigate aquí, el App decide la ruta correcta
-
+      // navegar o actualizar estado según tu app
     } catch (error) {
+      console.error('[AUTH] login error:', error.response?.status, error.response?.data);
       let msg = 'Correo o contraseña inválidos';
 
       if (error.response) {
         const { status, data } = error.response;
 
-        // Si backend ya devuelve message claro, úsalo
+        // Si backend ya envía message claro, usarlo
         if (data?.message && typeof data.message === 'string') {
           const text = data.message.toLowerCase();
           if (/correo|email|no existe|no registrado/.test(text)) {
-            msg = 'Correo no registrado';
-            setMensaje(msg);
+            setMensaje('Correo no registrado');
             return;
           }
           if (/contraseñ|password|clave|credencial/.test(text)) {
-            msg = 'Contraseña incorrecta';
-            setMensaje(msg);
+            setMensaje('Contraseña incorrecta');
             return;
           }
         }
 
-        // Si backend devuelve 404 -> correo no registrado
         if (status === 404) {
-          msg = 'Correo no registrado';
-          setMensaje(msg);
+          setMensaje('Correo no registrado');
           return;
         }
 
-        // Si backend devuelve 401 -> intentar diferenciar consultando existencia del email
         if (status === 401) {
-          try {
-            const exists = await checkEmailExists();
-            if (exists === true) {
-              msg = 'Contraseña incorrecta';
-            } else if (exists === false) {
-              msg = 'Correo no registrado';
-            } else {
-              // null -> no se pudo determinar
-              msg = 'Correo o contraseña inválidos';
-            }
-          } catch (e) {
-            msg = 'Correo o contraseña inválidos';
+          // Intentar diferenciar preguntando existencia del email
+          const exists = await checkEmailExists();
+          console.log('[AUTH] exists:', exists);
+          if (exists === true) {
+            setMensaje('Contraseña incorrecta');
+            return;
+          } else if (exists === false) {
+            setMensaje('Correo no registrado');
+            return;
+          } else {
+            // null -> no se pudo determinar
+            setMensaje('Correo o contraseña inválidos');
+            return;
           }
-          setMensaje(msg);
-          return;
         }
 
-        // Otros status
-        msg = 'Error del servidor. Intente más tarde.';
+        setMensaje('Error del servidor. Intente más tarde.');
       } else {
-        // No hay respuesta (problema de red)
-        msg = 'Error de red. Verifica tu conexión e inténtalo nuevamente.';
+        setMensaje('Error de red. Verifica tu conexión e inténtalo nuevamente.');
       }
-
-      console.error('❌ Error al iniciar sesión:', error);
-      setMensaje(msg);
     }
   };
 
@@ -115,9 +120,8 @@ function Login({ setUsuario }) {
         maxWidth: '400px',
         textAlign: 'center'
       }}>
-        {/* Logo del Banco de la Nación */}
-        <div className = "logoBN" style={{  textAlign: 'center' }}>
-                <img src={logoBN} alt="Banco de la Nación" style={{ width: '300px', height: 'auto' }} />
+        <div className="logoBN" style={{ textAlign: 'center' }}>
+          <img src={logoBN} alt="Banco de la Nación" style={{ width: '300px', height: 'auto' }} />
         </div>
         <h2 style={{ color: '#D22630', fontWeight: 'bold', marginBottom: '1.5rem' }}>Iniciar Sesión</h2>
         <form onSubmit={handleLogin}>
