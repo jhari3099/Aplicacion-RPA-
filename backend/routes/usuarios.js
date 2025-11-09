@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
 
     if (rows.length === 0) {
       // Correo no existe -> 404
-      return res.status(404).json({ message: 'Correo no registrado' });
+      return res.status(404).json({ message: 'Correo no registrado o incorrecto' });
     }
 
     const usuario = rows[0];
