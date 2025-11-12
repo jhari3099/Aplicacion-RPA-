@@ -14,14 +14,12 @@ function Resumen({ usuario, setUsuario }) {
   const [busqueda, setBusqueda] = useState('');
   const [ordenAscendente, setOrdenAscendente] = useState(false);
 
-  // Estados para confirmación por fila (resolver)
+  // Estados para confirmación por fila (resolver y eliminar)
   const [confirmTarget, setConfirmTarget] = useState(null);
   const [resolviendo, setResolviendo] = useState(false);
 
-  // --- Parte de delete comentada --- //
-  // const [deleteTarget, setDeleteTarget] = useState(null);
-  // const [deleting, setDeleting] = useState(false);
-  // ---------------------------------- //
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -71,36 +69,32 @@ function Resumen({ usuario, setUsuario }) {
     }
   };
 
-  // ----- Eliminar (comentado) -----
-  // const openDeleteFor = (reclamo, e) => {
-  //   if (e) { e.stopPropagation(); e.preventDefault(); }
-  //   setDeleteTarget(reclamo);
-  // };
-  //
-  // const closeDeleteFor = (e) => {
-  //   if (e) { e.stopPropagation(); e.preventDefault(); }
-  //   setDeleteTarget(null);
-  // };
-  //
-  // const confirmDeleteSingle = async (e) => {
-  //   if (e) { e.stopPropagation(); e.preventDefault(); }
-  //   if (!deleteTarget) return;
-  //   setDeleting(true);
-  //   try {
-  //     console.log('[DELETE] intentando:', `${API_URL}/api/reclamos/${deleteTarget.id}`);
-  //     const res = await axios.delete(`${API_URL}/api/reclamos/${deleteTarget.id}`);
-  //     console.log('[DELETE] respuesta:', res.status, res.data);
-  //     await cargarDatos();
-  //   } catch (error) {
-  //     const status = error.response?.status ?? 'no-response';
-  //     console.error('❌ Error al eliminar reclamo:', status, error);
-  //     alert('No se pudo eliminar el reclamo. Revisa la consola para más detalles.');
-  //   } finally {
-  //     setDeleting(false);
-  //     setDeleteTarget(null);
-  //   }
-  // };
-  // ---------------------------------
+  // ----- Eliminar (modal) -----
+  const openDeleteFor = (reclamo, e) => {
+    if (e) { e.stopPropagation(); e.preventDefault(); }
+    setDeleteTarget(reclamo);
+  };
+
+  const closeDeleteFor = (e) => {
+    if (e) { e.stopPropagation(); e.preventDefault(); }
+    setDeleteTarget(null);
+  };
+
+  const confirmDeleteSingle = async (e) => {
+    if (e) { e.stopPropagation(); e.preventDefault(); }
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      await axios.delete(`${API_URL}/api/reclamos/${deleteTarget.id}`);
+      await cargarDatos();
+    } catch (error) {
+      console.error('❌ Error al eliminar reclamo:', error);
+      alert('No se pudo eliminar el reclamo. Revisa la consola para más detalles.');
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
+    }
+  };
 
   const reclamosFiltrados = reclamos
     .filter(r => {
@@ -292,7 +286,7 @@ function Resumen({ usuario, setUsuario }) {
                           <FaEye size={18} />
                         </button>
 
-                        {/* Botón de eliminar comentado para desarrollo
+                        {/* Botón tacho de basura (ROJO) - elimina con confirm modal */}
                         <button
                           type="button"
                           onClick={(e) => openDeleteFor(r, e)}
@@ -312,8 +306,6 @@ function Resumen({ usuario, setUsuario }) {
                         >
                           <FaTrash size={16} />
                         </button>
-                        */}
-
                       </div>
                     </td>
                   </tr>
@@ -354,7 +346,7 @@ function Resumen({ usuario, setUsuario }) {
         </div>
       )}
 
-      {/* Modal de confirmación para Eliminar comentado
+      {/* Modal de confirmación para Eliminar */}
       {deleteTarget && (
         <div style={{
           position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
@@ -377,7 +369,6 @@ function Resumen({ usuario, setUsuario }) {
           </div>
         </div>
       )}
-      */}
 
     </div>
   );
